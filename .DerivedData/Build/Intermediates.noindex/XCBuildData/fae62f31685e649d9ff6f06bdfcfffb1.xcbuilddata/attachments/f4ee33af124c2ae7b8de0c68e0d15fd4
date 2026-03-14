@@ -1,0 +1,229 @@
+{
+  "" : {
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPicker-primary.dia",
+    "emit-module-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPicker-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPicker-primary-emit-module.dia",
+    "pch" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPicker-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPicker-primary.swiftdeps"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/ColorPicker/MagnifierView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierView~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/ColorPicker/MagnifierWindowController.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierWindowController.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierWindowController.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierWindowController.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierWindowController.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierWindowController.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierWindowController.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierWindowController.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MagnifierWindowController~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/ContentView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Managers/ClipboardManager.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ClipboardManager.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ClipboardManager.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ClipboardManager.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ClipboardManager.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ClipboardManager.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ClipboardManager.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ClipboardManager.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ClipboardManager~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Managers/ColorPickerManager.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorPickerManager.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorPickerManager.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorPickerManager.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorPickerManager.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorPickerManager.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorPickerManager.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorPickerManager.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorPickerManager~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Managers/DockIconManager.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/DockIconManager.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/DockIconManager.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/DockIconManager.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/DockIconManager.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/DockIconManager.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/DockIconManager.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/DockIconManager.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/DockIconManager~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Managers/LoginItemManager.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/LoginItemManager.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/LoginItemManager.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/LoginItemManager.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/LoginItemManager.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/LoginItemManager.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/LoginItemManager.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/LoginItemManager.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/LoginItemManager~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/MenuBarColorPickerApp.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPickerApp.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPickerApp.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPickerApp.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPickerApp.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPickerApp.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPickerApp.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPickerApp.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarColorPickerApp~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Models/ColorFormat.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorFormat.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorFormat.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorFormat.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorFormat.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorFormat.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorFormat.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorFormat.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorFormat~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Models/ColorListData.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListData.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListData.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListData.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListData.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListData.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListData.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListData.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListData~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Models/PaletteColor.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteColor.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteColor.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteColor.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteColor.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteColor.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteColor.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteColor.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteColor~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Models/PaletteMode.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteMode.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteMode.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteMode.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteMode.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteMode.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteMode.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteMode.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteMode~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Models/StoredColor.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/StoredColor.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/StoredColor.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/StoredColor.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/StoredColor.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/StoredColor.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/StoredColor.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/StoredColor.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/StoredColor~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Stores/PaletteStore.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteStore.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteStore.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteStore.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteStore.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteStore.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteStore.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteStore.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/PaletteStore~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/ColorListView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorListView~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/ColorSliderView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSliderView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSliderView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSliderView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSliderView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSliderView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSliderView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSliderView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSliderView~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/ColorSpectrumView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSpectrumView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSpectrumView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSpectrumView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSpectrumView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSpectrumView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSpectrumView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSpectrumView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorSpectrumView~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/ColorWheelView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorWheelView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorWheelView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorWheelView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorWheelView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorWheelView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorWheelView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorWheelView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/ColorWheelView~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/MenuBarContentView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarContentView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarContentView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarContentView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarContentView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarContentView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarContentView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarContentView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/MenuBarContentView~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/SettingsView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SettingsView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SettingsView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SettingsView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SettingsView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SettingsView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SettingsView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SettingsView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SettingsView~partial.swiftmodule"
+  },
+  "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/SwatchView.swift" : {
+    "const-values" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SwatchView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SwatchView.d",
+    "diagnostics" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SwatchView.dia",
+    "index-unit-output-path" : "/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SwatchView.o",
+    "llvm-bc" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SwatchView.bc",
+    "object" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SwatchView.o",
+    "swift-dependencies" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SwatchView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/Projekte/xcode/MenuBarColorPicker/.DerivedData/Build/Intermediates.noindex/MenuBarColorPicker.build/Debug/MenuBarColorPicker.build/Objects-normal/arm64/SwatchView~partial.swiftmodule"
+  }
+}

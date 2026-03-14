@@ -1,17 +1,35 @@
 //
 //  MenuBarColorPickerApp.swift
-//  MenuBarColorPicker
-//
-//  Created by Dirk Clemens on 13.03.26.
 //
 
 import SwiftUI
+import Combine
 
 @main
 struct MenuBarColorPickerApp: App {
+    @StateObject private var paletteStore = PaletteStore()
+    @StateObject private var colorPicker = ColorPickerManager()
+    @StateObject private var loginItemManager = LoginItemManager()
+
+    init() {
+        let showDockIcon = UserDefaults.standard.bool(forKey: "showDockIcon")
+        DockIconManager.apply(showDockIcon: showDockIcon)
+    }
+
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        MenuBarExtra("Color Picker", systemImage: "paintpalette") {
+            MenuBarContentView()
+                .environmentObject(paletteStore)
+                .environmentObject(colorPicker)
+                .environmentObject(loginItemManager)
+        }
+        .menuBarExtraStyle(.window)
+
+        Settings {
+            SettingsView()
+                .environmentObject(paletteStore)
+                .environmentObject(colorPicker)
+                .environmentObject(loginItemManager)
         }
     }
 }

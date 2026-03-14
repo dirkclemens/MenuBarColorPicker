@@ -1,0 +1,16 @@
+{
+  "source": "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/ColorListView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Color List",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 35
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,16 @@
+{
+  "source": "/Users/dirk/Projekte/xcode/MenuBarColorPicker/MenuBarColorPicker/Views/ColorSliderView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Mode",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 50
+        }
+      }
+    ]
+  },
+  "version": 1
+}
