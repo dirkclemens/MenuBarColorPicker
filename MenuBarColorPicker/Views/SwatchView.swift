@@ -3,9 +3,25 @@ import SwiftUI
 struct SwatchView: View {
     let color: NSColor
     let title: String
+    let width: CGFloat
+    let height: CGFloat
     let action: () -> Void
 
     @State private var isHovering = false
+
+    init(
+        color: NSColor,
+        title: String,
+        width: CGFloat = 20,
+        height: CGFloat = 20,
+        action: @escaping () -> Void
+    ) {
+        self.color = color
+        self.title = title
+        self.width = width
+        self.height = height
+        self.action = action
+    }
 
     var body: some View {
         Button(action: action) {
@@ -15,7 +31,7 @@ struct SwatchView: View {
                 RoundedRectangle(cornerRadius: 6, style: .continuous)
                     .stroke(Color.black.opacity(0.15), lineWidth: 1)
             }
-            .frame(width: 20, height: 20)
+            .frame(width: width, height: height)
             .shadow(color: Color.black.opacity(isHovering ? 0.2 : 0.14), radius: isHovering ? 4 : 3, x: 0, y: 2)
             .scaleEffect(isHovering ? 1.03 : 1.0)
             .animation(.easeOut(duration: 0.12), value: isHovering)

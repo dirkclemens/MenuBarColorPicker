@@ -19,7 +19,8 @@ struct ColorSliderView: View {
 
     var onSelect: (NSColor) -> Void
     var onAdd: (NSColor) -> Void
-
+    @Binding var selectedColor: NSColor?
+    
     @State private var mode: Mode = .rgb
 
     @State private var r: Double = 1.0
@@ -67,25 +68,38 @@ struct ColorSliderView: View {
                 .padding(10)
             }
             .frame(maxWidth: .infinity, alignment: .center)
-
-            HStack(spacing: 8) {
-                SwatchView(color: currentColor(), title: "Current Color") {
-                    let color = currentColor()
-                    ClipboardManager.copy(ColorFormatter.hexString(color, uppercase: true, prefix: true))
-                }
-                .frame(width: 32, height: 32)
-
-                Button() {
-                    let color = currentColor()
-                    onAdd(color)
-                } label: {
-                    Image(systemName: "plus.circle")
-                }
-                .frame(width: 32, height: 32)
-            }
-            .font(.caption)
-            .frame(maxWidth: .infinity, alignment: .center)
         }
+        .onAppear {
+            syncFromSelectedColor()
+        }
+        .onChange(of: selectedColor) { _, _ in
+            syncFromSelectedColor()
+        }
+    }
+
+    private func syncFromSelectedColor() {
+        guard let color = selectedColor?.usingColorSpace(.deviceRGB) else { return }
+
+        var rr: CGFloat = 0
+        var gg: CGFloat = 0
+        var bb: CGFloat = 0
+        var aa: CGFloat = 0
+        color.getRed(&rr, green: &gg, blue: &bb, alpha: &aa)
+
+        r = Double(rr)
+        g = Double(gg)
+        b = Double(bb)
+        opacity = Double(aa)
+
+        var hh: CGFloat = 0
+        var ss: CGFloat = 0
+        var brr: CGFloat = 0
+        color.getHue(&hh, saturation: &ss, brightness: &brr, alpha: nil)
+        h = Double(hh)
+        s = Double(ss)
+        br = Double(brr)
+
+        gray = Double((rr + gg + bb) / 3.0)
     }
 
     private var rgbSliders: some View {

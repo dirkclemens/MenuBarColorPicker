@@ -3,6 +3,7 @@ import SwiftUI
 struct ColorSpectrumView: View {
     var onSelect: (NSColor) -> Void
     var onAdd: (NSColor) -> Void
+    @Binding var selectedColor: NSColor?
     
     @State private var hue: Double = 0.55
     @State private var saturation: Double = 0.7
@@ -32,26 +33,31 @@ struct ColorSpectrumView: View {
                 .padding(10)
             }
             .frame(width: squareSize + 20, height: squareSize + 70)
-            
-            HStack(spacing: 8) {
-                SwatchView(color: currentColor(), title: "Current Color") {
-                    let color = currentColor()
-                    ClipboardManager.copy(ColorFormatter.hexString(color, uppercase: true, prefix: true))
-                }
-                .frame(width: 32, height: 32)
-
-                Button() {
-                    let color = currentColor()
-                    onAdd(color)
-                } label: {
-                    Image(systemName: "plus.circle")
-                }
-                .frame(width: 32, height: 32)
-            }
-            .font(.caption)
+        }
+        .onAppear {
+            syncFromSelectedColor()
+        }
+        .onChange(of: selectedColor) { _, _ in
+            syncFromSelectedColor()
         }
     }
     
+    private func syncFromSelectedColor() {
+        guard let color = selectedColor?.usingColorSpace(.deviceRGB) else { return }
+
+        var h: CGFloat = 0
+        var s: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        color.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+
+        hue = Double(h)
+        saturation = Double(s)
+        brightness = Double(b)
+        alpha = Double(a)
+        cx = saturation
+    }
+
     private var saturationBrightnessSquare: some View {
         ZStack {
             Rectangle()

@@ -1,6 +1,7 @@
 import AppKit
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct MenuBarContentView: View {
     @EnvironmentObject private var paletteStore: PaletteStore
@@ -15,6 +16,15 @@ struct MenuBarContentView: View {
     @State private var paletteMode: PaletteMode = .spectrum
     @State private var selectedColor: NSColor?
     @State private var lastCopiedFormat: String?
+    @State private var hexInput: String = ""
+    @State private var rgbInput: String = ""
+    @State private var hslInput: String = ""
+    @State private var lchInput: String = ""
+    @State private var isUpdatingFormatFields = false
+    @State private var hexInputInvalid = false
+    @State private var rgbInputInvalid = false
+    @State private var hslInputInvalid = false
+    @State private var lchInputInvalid = false
 
     private enum Page: Int, CaseIterable {
         case main
@@ -31,7 +41,9 @@ struct MenuBarContentView: View {
                     header
                     paletteSwitcher
                     Divider()
-                    colorValueCopyText
+                    colorPreview
+                    Divider()
+                    colorFormatTextFields
                     Divider()
                     customColors
                     Divider()
@@ -44,12 +56,19 @@ struct MenuBarContentView: View {
                     guard let color else { return }
                     paletteStore.add(color: color)
                     selectedColor = color
+                    syncFormatFields(from: color)
                     colorPicker.pickedColor = nil
                 }
                 .onChange(of: colorPicker.lastError) { _, error in
                     if let error {
                         statusText = error
                     }
+                }
+                .onAppear {
+                    syncFormatFields(from: selectedColor)
+                }
+                .onChange(of: selectedColor) { _, color in
+                    syncFormatFields(from: color)
                 }
             }
             
@@ -79,12 +98,17 @@ struct MenuBarContentView: View {
     }
 
     private var paletteGrid: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        let swatches: [(name: String, color: NSColor)] = ColorListData.standard.compactMap { entry in
+            guard let color = NSColor(hex: entry.hex) else { return nil }
+            return (name: entry.name, color: color)
+        }
+
+        return VStack(alignment: .leading, spacing: 8) {
             Text("Palette")
                 .font(.caption)
                 .foregroundStyle(.secondary)
             LazyVGrid(columns: columns, spacing: 4) {
-                ForEach(PaletteCatalog.colors) { swatch in
+                ForEach(swatches, id: \.name) { swatch in
                     SwatchView(color: swatch.color, title: swatch.name) {
                         selectColor(swatch.color)
                     }
@@ -109,7 +133,7 @@ struct MenuBarContentView: View {
                     },
                     onAdd: { color in
                         paletteStore.add(color: color)
-                    }
+                    }, selectedColor: $selectedColor
                 )
                 Spacer()
             }
@@ -129,7 +153,7 @@ struct MenuBarContentView: View {
                     },
                     onAdd: { color in
                         paletteStore.add(color: color)
-                    }
+                    }, selectedColor: $selectedColor
                 )
                 Spacer()
             }
@@ -165,7 +189,7 @@ struct MenuBarContentView: View {
                     },
                     onAdd: { color in
                         paletteStore.add(color: color)
-                    }
+                    }, selectedColor: $selectedColor
                 )
                 Spacer()
             }
@@ -211,8 +235,27 @@ struct MenuBarContentView: View {
             }
         }
     }
-
-    private var colorValueCopyText: some View {
+    
+    private var colorPreview: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Color Preview")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            CurrentColorPreviewView(
+                color: currentColor(),
+                onCopy: { color in
+                    ClipboardManager.copy(ColorFormatter.hexString(color, uppercase: true, prefix: true))
+                },
+                onAdd: { color in
+                    onAdd(color)
+                }
+            )
+        }
+    }
+    
+    private var colorFormatTextFields: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("Color Formats")
@@ -220,20 +263,54 @@ struct MenuBarContentView: View {
                     .foregroundStyle(.secondary)
             }
             VStack(alignment: .leading, spacing: 4) {
-                formatRow(label: "hex:", value: hexValue) {
-                    ClipboardManager.copy(hexValue)
+                formatRow(label: "hex:", text: $hexInput, copyValue: hexValue, isInvalid: hexInputInvalid) {
+                    applyHexInput()
                 }
-                formatRow(label: "rgb:", value: rgbValue) {
-                    ClipboardManager.copy(rgbValue)
+                formatRow(label: "rgb:", text: $rgbInput, copyValue: rgbValue, isInvalid: rgbInputInvalid) {
+                    applyRGBInput()
                 }
-                formatRow(label: "hsl:", value: hslValue) {
-                    ClipboardManager.copy(hslValue)
+                formatRow(label: "hsl:", text: $hslInput, copyValue: hslValue, isInvalid: hslInputInvalid) {
+                    applyHSLInput()
                 }
-                formatRow(label: "lch:", value: lchValue) {
-                    ClipboardManager.copy(lchValue)
+                formatRow(label: "lch:", text: $lchInput, copyValue: lchValue, isInvalid: lchInputInvalid) {
+                    applyLCHInput()
                 }
             }
+
+            if let message = formatValidationMessage {
+                Text(message)
+                    .font(.caption2)
+                    .foregroundStyle(.red)
+            }
         }
+    }
+
+    private func formatRow(label: String, text: Binding<String>, copyValue: String, isInvalid: Bool, onSubmit: @escaping () -> Void) -> some View {
+        HStack {
+            TextField(label, text: text)
+                .textFieldStyle(.roundedBorder)
+                .textSelection(.enabled)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(isInvalid ? Color.red : Color.clear, lineWidth: 1)
+                )
+                .onSubmit(onSubmit)
+            Button(action: {
+                ClipboardManager.copy(copyValue)
+            }) {
+                Image(systemName: "doc.on.doc")
+                    .font(.system(size: 10))
+            }
+            .disabled(copyValue.isEmpty)
+        }
+    }
+
+    private var formatValidationMessage: String? {
+        if hexInputInvalid { return "Ungueltiges HEX-Format" }
+        if rgbInputInvalid { return "Ungueltiges RGB-Format" }
+        if hslInputInvalid { return "Ungueltiges HSL-Format" }
+        if lchInputInvalid { return "Ungueltiges LCH-Format" }
+        return nil
     }
     
     private var customColors: some View {
@@ -243,6 +320,17 @@ struct MenuBarContentView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
+                Button("Save") {
+                    exportCustomColors()
+                }
+                .buttonStyle(.link)
+                .font(.caption)
+
+                Button("Load") {
+                    importCustomColors()
+                }
+                .buttonStyle(.link)
+                .font(.caption)
                 if !paletteStore.customColors.isEmpty {
                     Button("Clear") {
                         paletteStore.clear()
@@ -321,10 +409,86 @@ struct MenuBarContentView: View {
     
     private func selectColor(_ color: NSColor) {
         selectedColor = color
+        syncFormatFields(from: color)
     }
 
-    private var hexValue: String {
-        guard let color = selectedColor else { return "" }
+    private func syncFormatFields(from color: NSColor?) {
+        guard !isUpdatingFormatFields else { return }
+        isUpdatingFormatFields = true
+        defer { isUpdatingFormatFields = false }
+        guard let color else {
+            hexInput = ""
+            rgbInput = ""
+            hslInput = ""
+            lchInput = ""
+            hexInputInvalid = false
+            rgbInputInvalid = false
+            hslInputInvalid = false
+            lchInputInvalid = false
+            return
+        }
+        hexInput = formattedHex(for: color)
+        rgbInput = formattedRGB(for: color)
+        hslInput = formattedHSL(for: color)
+        lchInput = formattedLCH(for: color)
+        hexInputInvalid = false
+        rgbInputInvalid = false
+        hslInputInvalid = false
+        lchInputInvalid = false
+    }
+
+    private func applyHexInput() {
+        guard !isUpdatingFormatFields else { return }
+
+        let normalized = hexInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        let candidate = normalized.hasPrefix("#") ? String(normalized.dropFirst()) : normalized
+        let validLength = candidate.count == 3 || candidate.count == 4 || candidate.count == 6 || candidate.count == 8
+        let validChars = candidate.range(of: "^[0-9A-Fa-f]+$", options: .regularExpression) != nil
+
+        guard validLength, validChars, let color = NSColor(hex: normalized) else {
+            hexInputInvalid = true
+            return
+        }
+
+        hexInputInvalid = false
+        selectedColor = color
+        syncFormatFields(from: color)
+    }
+
+    private func applyRGBInput() {
+        guard !isUpdatingFormatFields else { return }
+        guard let color = parseRGB(rgbInput) else {
+            rgbInputInvalid = true
+            return
+        }
+        rgbInputInvalid = false
+        selectedColor = color
+        syncFormatFields(from: color)
+    }
+
+    private func applyHSLInput() {
+        guard !isUpdatingFormatFields else { return }
+        guard let color = parseHSL(hslInput) else {
+            hslInputInvalid = true
+            return
+        }
+        hslInputInvalid = false
+        selectedColor = color
+        syncFormatFields(from: color)
+    }
+
+    private func applyLCHInput() {
+        guard !isUpdatingFormatFields else { return }
+        guard let color = parseLCH(lchInput) else {
+            lchInputInvalid = true
+            return
+        }
+        lchInputInvalid = false
+        selectedColor = color
+        syncFormatFields(from: color)
+    }
+
+    private func formattedHex(for color: NSColor) -> String {
         let alpha = color.srgb.alphaComponent
         if alpha < 0.999 {
             return ColorFormatter.hexStringWithAlpha(color, uppercase: hexUppercase, prefix: hexPrefix)
@@ -332,8 +496,7 @@ struct MenuBarContentView: View {
         return ColorFormatter.hexString(color, uppercase: hexUppercase, prefix: hexPrefix)
     }
 
-    private var rgbValue: String {
-        guard let color = selectedColor else { return "" }
+    private func formattedRGB(for color: NSColor) -> String {
         let alpha = color.srgb.alphaComponent
         if alpha < 0.999 {
             return ColorFormatter.rgbaString(color)
@@ -341,8 +504,7 @@ struct MenuBarContentView: View {
         return ColorFormatter.rgbString(color)
     }
 
-    private var hslValue: String {
-        guard let color = selectedColor else { return "" }
+    private func formattedHSL(for color: NSColor) -> String {
         let alpha = color.srgb.alphaComponent
         if alpha < 0.999 {
             return ColorFormatter.hslaString(color)
@@ -350,23 +512,151 @@ struct MenuBarContentView: View {
         return ColorFormatter.hslString(color)
     }
 
-    private var lchValue: String {
-        guard let color = selectedColor else { return "" }
-        return ColorFormatter.lchString(color)
+    private func formattedLCH(for color: NSColor) -> String {
+        ColorFormatter.lchString(color)
     }
 
-    private func formatRow(label: String, value: String, copyAction: @escaping () -> Void) -> some View {
-        HStack {
-            TextField(label, text: .constant(value))
-                .textFieldStyle(.roundedBorder)
-                .disabled(true)
-                .textSelection(.enabled)
-            Button(action: copyAction) {
-                Image(systemName: "doc.on.doc")
-                    .font(.system(size: 10))
-            }
-            .disabled(value.isEmpty)
+    private func parseRGB(_ text: String) -> NSColor? {
+        let values = extractNumbers(from: text)
+        if values.count == 3 {
+            return NSColor(
+                red: clamp01(values[0] / 255.0),
+                green: clamp01(values[1] / 255.0),
+                blue: clamp01(values[2] / 255.0),
+                alpha: 1.0
+            )
         }
+        if values.count == 4 {
+            return NSColor(
+                red: clamp01(values[0] / 255.0),
+                green: clamp01(values[1] / 255.0),
+                blue: clamp01(values[2] / 255.0),
+                alpha: clamp01(values[3])
+            )
+        }
+        return nil
+    }
+
+    private func parseHSL(_ text: String) -> NSColor? {
+        let values = extractNumbers(from: text)
+        guard values.count == 3 || values.count == 4 else { return nil }
+        let h = values[0].truncatingRemainder(dividingBy: 360.0)
+        let s = clamp01(values[1] / 100.0)
+        let l = clamp01(values[2] / 100.0)
+        let alpha = values.count == 4 ? clamp01(values[3]) : 1.0
+
+        let c = (1.0 - abs(2.0 * l - 1.0)) * s
+        let x = c * (1.0 - abs((h / 60.0).truncatingRemainder(dividingBy: 2.0) - 1.0))
+        let m = l - c / 2.0
+
+        let tuple: (CGFloat, CGFloat, CGFloat)
+        switch h {
+        case 0..<60: tuple = (c, x, 0)
+        case 60..<120: tuple = (x, c, 0)
+        case 120..<180: tuple = (0, c, x)
+        case 180..<240: tuple = (0, x, c)
+        case 240..<300: tuple = (x, 0, c)
+        default: tuple = (c, 0, x)
+        }
+
+        return NSColor(
+            red: clamp01(tuple.0 + m),
+            green: clamp01(tuple.1 + m),
+            blue: clamp01(tuple.2 + m),
+            alpha: alpha
+        )
+    }
+
+    private func parseLCH(_ text: String) -> NSColor? {
+        let values = extractNumbers(from: text)
+        guard values.count == 3 else { return nil }
+
+        let l = values[0]
+        let c = values[1]
+        let hDeg = values[2]
+        let hRad = hDeg * .pi / 180.0
+        let a = c * cos(hRad)
+        let b = c * sin(hRad)
+
+        return ColorFormatter.labToSRGBColor(l: l, a: a, b: b)
+    }
+
+    private func extractNumbers(from text: String) -> [CGFloat] {
+        let cleaned = text
+            .lowercased()
+            .replacingOccurrences(of: "rgba", with: "")
+            .replacingOccurrences(of: "rgb", with: "")
+            .replacingOccurrences(of: "hsla", with: "")
+            .replacingOccurrences(of: "hsl", with: "")
+            .replacingOccurrences(of: "lch", with: "")
+            .replacingOccurrences(of: "(", with: "")
+            .replacingOccurrences(of: ")", with: "")
+            .replacingOccurrences(of: "%", with: "")
+        return cleaned
+            .split(separator: ",")
+            .compactMap { CGFloat(Double($0.trimmingCharacters(in: .whitespacesAndNewlines)) ?? .nan) }
+            .filter { !$0.isNaN }
+    }
+
+    private func clamp01(_ value: CGFloat) -> CGFloat {
+        min(max(value, 0.0), 1.0)
+    }
+
+    private func currentColor() -> NSColor {
+        selectedColor ?? .white
+    }
+
+    private func onAdd(_ color: NSColor) {
+        paletteStore.add(color: color)
+    }
+
+    private func exportCustomColors() {
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.json]
+        panel.canCreateDirectories = true
+        panel.nameFieldStringValue = "MenuBarColorPicker-custom-colors.json"
+        let response = panel.runModal()
+        guard response == .OK, let url = panel.url else { return }
+        if paletteStore.exportToJSON(url: url) {
+            statusText = "Custom colors saved"
+        } else {
+            statusText = "Failed to save custom colors"
+        }
+    }
+
+    private func importCustomColors() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.json]
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        let response = panel.runModal()
+        guard response == .OK, let url = panel.url else { return }
+        if paletteStore.importFromJSON(url: url) {
+            statusText = "Custom colors loaded"
+        } else {
+            statusText = "Failed to load custom colors"
+        }
+    }
+
+    private var hexValue: String {
+        guard let color = selectedColor else { return "" }
+        return formattedHex(for: color)
+    }
+
+    private var rgbValue: String {
+        guard let color = selectedColor else { return "" }
+        return formattedRGB(for: color)
+    }
+
+    private var hslValue: String {
+        guard let color = selectedColor else { return "" }
+        return formattedHSL(for: color)
+    }
+
+    private var lchValue: String {
+        guard let color = selectedColor else { return "" }
+        return formattedLCH(for: color)
     }
 
     @ViewBuilder

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ColorListView: View {
     enum ListMode: String, CaseIterable, Identifiable {
+        case standard
         case developer
         case webSafe
         case cssNamed
@@ -11,10 +12,11 @@ struct ColorListView: View {
 
         var label: String {
             switch self {
+            case .standard: return "Std."
             case .developer: return "Dev"
             case .webSafe: return "Web"
             case .cssNamed: return "CSS"
-            case .ralClassic: return "RAL"
+            case .ralClassic: return "Ind."
             }
         }
     }
@@ -71,6 +73,8 @@ struct ColorListView: View {
 
     private var currentList: [NamedColor] {
         switch mode {
+        case .standard:
+            return standardColors
         case .developer:
             return developerColors
         case .webSafe:
@@ -141,6 +145,11 @@ struct ColorListView: View {
         return list
     }
 
+    
+    private var standardColors: [NamedColor] {
+        namedColors(from: ColorListData.standard, includeHex: false)
+    }
+    
     private var cssNamedColors: [NamedColor] {
         namedColors(from: ColorListData.cssNamed, includeHex: false)
     }

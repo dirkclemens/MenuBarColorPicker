@@ -29,14 +29,12 @@ final class MagnifierWindowController {
         panel.orderOut(nil)
     }
 
-//    func update(image: CGImage?, displayPoint: NSPoint, eventPoint: NSPoint) {
     func update(image: CGImage?, at: NSPoint, in screen: NSScreen) {
         magnifierView.image = image
         magnifierView.toolTip = String(format: "%.1f, %.1f", at.x, at.y)
         let frame = screen.visibleFrame
-//        let edgeMargin: CGFloat = 16.0
-//        let offset = CGPoint(x: size.width / 2.0 + edgeMargin, y: size.height / 2.0 + edgeMargin)
-        let offset = CGPoint(x: 0, y: 0)
+        let edgeMargin: CGFloat = 16.0
+        let offset = CGPoint(x: size.width / 2.0 + edgeMargin, y: size.height / 2.0 + edgeMargin)
         let centers = [
             CGPoint(x: at.x + offset.x, y: at.y + offset.y),
             CGPoint(x: at.x - offset.x, y: at.y + offset.y),
@@ -51,7 +49,6 @@ final class MagnifierWindowController {
                 return
             }
         }
-
 
         var origin = CGPoint(x: at.x + offset.x - size.width / 2.0, y: at.y + offset.y - size.height / 2.0)
         origin.x = min(max(origin.x, frame.minX), frame.maxX - size.width)
