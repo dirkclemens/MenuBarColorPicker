@@ -14,7 +14,6 @@ final class ColorPickerManager: ObservableObject {
     private var globalClickMonitor: Any?
     private var localClickMonitor: Any?
     private var lastImage: CGImage?
-    private var lastPoint: NSPoint = .zero
     private var isCaptureInFlight = false
 
     private let sampleSize: CGFloat = 28.0
@@ -42,19 +41,21 @@ final class ColorPickerManager: ObservableObject {
     }
 
     private func startTracking() {
-        timer = Timer.scheduledTimer(withTimeInterval: updateInterval, repeats: true) { [weak self] _ in
-            self?.updateMagnifier()
-        }
+        timer = Timer.scheduledTimer(timeInterval: updateInterval,
+                                     target: self,
+                                     selector: #selector(handleTimerTick(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
 
-        globalClickMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
+        globalClickMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseUp, .rightMouseUp]) { [weak self] _ in
             Task { @MainActor in
-                self?.finishPick()
+                self?.finishPick(at: NSEvent.mouseLocation)
             }
         }
 
-        localClickMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+        localClickMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseUp, .rightMouseUp]) { [weak self] event in
             Task { @MainActor in
-                self?.finishPick()
+                self?.finishPick(at: NSEvent.mouseLocation)
             }
             return event
         }
@@ -74,59 +75,34 @@ final class ColorPickerManager: ObservableObject {
         lastImage = nil
     }
 
+    @objc private func handleTimerTick(_ timer: Timer) {
+        updateMagnifier()
+    }
+
     private func updateMagnifier() {
         let uiPoint = NSEvent.mouseLocation
         let cgPoint = CGEvent(source: nil)?.location
         let capturePoint = cgPoint.map { NSPoint(x: $0.x, y: $0.y) } ?? uiPoint
-        lastPoint = capturePoint
-        if let screen = NSScreen.screens.first(where: { $0.frame.contains(capturePoint) }) ?? NSScreen.main {
-            let rect = captureRect(for: capturePoint)
-            let screenFrame = screen.frame
-            NSLog("Picker mouse NSEvent: (%.1f, %.1f) CGEvent: (%.1f, %.1f) screenFrame: (%.1f, %.1f, %.1f, %.1f) captureRect: (%.1f, %.1f, %.1f, %.1f)",
-                  uiPoint.x, uiPoint.y,
-                  cgPoint?.x ?? -1, cgPoint?.y ?? -1,
-                  screenFrame.origin.x, screenFrame.origin.y, screenFrame.size.width, screenFrame.size.height,
-                  rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)
-            logWindowInfo(around: uiPoint)
-        }
         captureImage(at: capturePoint) { [weak self] image in
             guard let self else { return }
             self.lastImage = image
-            self.magnifier.update(image: image, at: uiPoint)
+            if let screen = NSScreen.screens.first(where: { $0.frame.contains(uiPoint) }) ?? NSScreen.main {
+                self.magnifier.update(image: image, at: uiPoint, in: screen)
+            }
             if image == nil {
                 self.lastError = "Screen capture failed. Check Screen Recording permission."
             }
         }
     }
 
-    private func logWindowInfo(around point: NSPoint) {
-        let opts: CGWindowListOption = [.optionOnScreenOnly, .excludeDesktopElements]
-        guard let infoList = CGWindowListCopyWindowInfo(opts, kCGNullWindowID) as? [[String: Any]] else { return }
-
-        let sample = infoList.prefix(8).map { info -> String in
-            let owner = info[kCGWindowOwnerName as String] as? String ?? "?"
-            let name = info[kCGWindowName as String] as? String ?? ""
-            let layer = info[kCGWindowLayer as String] as? Int ?? -1
-            let alpha = info[kCGWindowAlpha as String] as? Double ?? -1
-            let bounds = info[kCGWindowBounds as String] as? [String: Any]
-            let x = bounds?["X"] as? Double ?? 0
-            let y = bounds?["Y"] as? Double ?? 0
-            let w = bounds?["Width"] as? Double ?? 0
-            let h = bounds?["Height"] as? Double ?? 0
-            return "\(owner) \(name) layer:\(layer) alpha:\(String(format: "%.2f", alpha)) bounds:(\(Int(x)),\(Int(y)),\(Int(w)),\(Int(h)))"
-        }
-
-        NSLog("Picker windows at (%.1f, %.1f): %s", point.x, point.y, sample.joined(separator: " | "))
-    }
-
-    private func finishPick() {
+    private func finishPick(at point: NSPoint) {
         if let image = lastImage, let color = sampleCenterColor(from: image) {
             pickedColor = color
             stop()
             return
         }
 
-        captureImage(at: lastPoint) { [weak self] image in
+        captureImage(at: point) { [weak self] image in
             guard let self else { return }
             guard let image else {
                 self.lastError = "Screen capture failed. Check Screen Recording permission."
@@ -147,7 +123,7 @@ final class ColorPickerManager: ObservableObject {
         let rect = captureRect(for: point)
 
         SCScreenshotManager.captureImage(in: rect) { [weak self] image, error in
-            Task { @MainActor in
+            DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 self.isCaptureInFlight = false
                 if let error {

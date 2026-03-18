@@ -69,16 +69,12 @@ struct ColorSliderView: View {
             .frame(maxWidth: .infinity, alignment: .center)
 
             HStack(spacing: 8) {
-                SwatchView(color: currentColor(), title: "Current Color") {}
-                    .frame(width: 32, height: 32)
-                Button() {
+                SwatchView(color: currentColor(), title: "Current Color") {
                     let color = currentColor()
-                    onSelect(color)
-                } label: {
-                    Image(systemName: "doc.on.doc")
-                        .font(.caption2)
+                    ClipboardManager.copy(ColorFormatter.hexString(color, uppercase: true, prefix: true))
                 }
                 .frame(width: 32, height: 32)
+
                 Button() {
                     let color = currentColor()
                     onAdd(color)

@@ -11,7 +11,7 @@ final class MagnifierView: NSView {
         guard let context = NSGraphicsContext.current?.cgContext else { return }
 
         let bounds = self.bounds
-        let radius = min(bounds.width, bounds.height) / 2.0
+//        let radius = min(bounds.width, bounds.height) / 2.0
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
 
         context.saveGState()

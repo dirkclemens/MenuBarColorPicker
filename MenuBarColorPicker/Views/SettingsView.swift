@@ -9,43 +9,33 @@ struct SettingsView: View {
     @AppStorage("showDockIcon") private var showDockIcon = false
 
     var body: some View {
-        Form {
-            Section("Clipboard Format") {
-                Toggle("Hex uppercase", isOn: $hexUppercase)
-                Toggle("Hex with # prefix", isOn: $hexPrefix)
-            }
-
-            Section("App") {
-                Toggle("Show Dock icon", isOn: $showDockIcon)
-                    .onChange(of: showDockIcon) { _, value in
-                        DockIconManager.apply(showDockIcon: value)
-                    }
-
-                Toggle("Launch at login", isOn: Binding(
-                    get: { loginItemManager.isEnabled },
-                    set: { loginItemManager.setEnabled($0) }
-                ))
-
-                if let error = loginItemManager.lastError {
-                    Text(error)
-                        .font(.caption)
-                        .foregroundStyle(.red)
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Clipboard Format")
+                .font(.headline)
+            Toggle("Hex uppercase", isOn: $hexUppercase)
+            Toggle("Hex with # prefix", isOn: $hexPrefix)
+            
+            Divider()
+            
+            Text("App")
+                .font(.headline)
+            Toggle("Show Dock icon", isOn: $showDockIcon)
+                .onChange(of: showDockIcon) { _, value in
+                    DockIconManager.apply(showDockIcon: value)
                 }
-            }
-
-            Section("Color Picker") {
-                Text("Uses screen capture to sample the pixel under the magnifier.")
+            Toggle("Launch at login", isOn: Binding(
+                get: { loginItemManager.isEnabled },
+                set: { loginItemManager.setEnabled($0) }
+            ))
+            if let error = loginItemManager.lastError {
+                Text(error)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
-                if let error = colorPicker.lastError {
-                    Text(error)
-                        .font(.caption)
-                        .foregroundStyle(.red)
-                }
+                    .foregroundStyle(.red)
             }
+
         }
         .padding(16)
-        .frame(width: 360)
+        .frame(maxWidth: .infinity)
         .onAppear {
             DockIconManager.apply(showDockIcon: showDockIcon)
         }

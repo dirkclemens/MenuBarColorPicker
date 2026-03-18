@@ -14,7 +14,7 @@ struct ColorListView: View {
             case .developer: return "Dev"
             case .webSafe: return "Web"
             case .cssNamed: return "CSS"
-            case .ralClassic: return "'RAL'"
+            case .ralClassic: return "RAL"
             }
         }
     }
@@ -42,18 +42,16 @@ struct ColorListView: View {
             List(currentList) { item in
                 HStack(spacing: 8) {
                     SwatchView(color: item.color, title: item.name) {
+                        let color = item.color
                         onSelect(item.color)
+                        ClipboardManager.copy(ColorFormatter.hexString(color, uppercase: true, prefix: true))
                     }
                     .frame(width: 20, height: 20)
                     Text(item.name)
                         .font(.caption)
+ 
                     Spacer()
-                    Button() {
-                        onSelect(item.color)
-                    } label: {
-                        Image(systemName: "doc.on.doc")
-                    }
-                    .buttonStyle(.plain)
+
                     Button() {
                         onAdd(item.color)
                     } label: {

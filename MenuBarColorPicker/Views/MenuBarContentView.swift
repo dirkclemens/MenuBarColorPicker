@@ -5,42 +5,67 @@ import SwiftUI
 struct MenuBarContentView: View {
     @EnvironmentObject private var paletteStore: PaletteStore
     @EnvironmentObject private var colorPicker: ColorPickerManager
+    @EnvironmentObject private var loginItemManager: LoginItemManager
 
     @AppStorage("hexUppercase") private var hexUppercase = true
     @AppStorage("hexPrefix") private var hexPrefix = true
+    @AppStorage("showDockIcon") private var showDockIcon = false
+    
     @State private var statusText: String = " "
     @State private var paletteMode: PaletteMode = .spectrum
     @State private var selectedColor: NSColor?
     @State private var lastCopiedFormat: String?
 
+    private enum Page: Int, CaseIterable {
+        case main
+        case settings
+    }
+    @State private var page: Page = .main
+
     private let columns = Array(repeating: GridItem(.fixed(20), spacing: 4), count: 10)
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            header
-            paletteSwitcher
-            Divider()
-            colorValueCopyText
-            Divider()
-            customColors
-            statusLine
-            Divider()
-            footerButtons
-        }
-        .padding(12)
-        .frame(width: 260)
-        .onChange(of: colorPicker.pickedColor) { _, color in
-            guard let color else { return }
-            paletteStore.add(color: color)
-            selectedColor = color
-            updateStatus(prefix: "Picked")
-            colorPicker.pickedColor = nil
-        }
-        .onChange(of: colorPicker.lastError) { _, error in
-            if let error {
-                statusText = error
+        ZStack {
+            if page == .main {
+                VStack(alignment: .leading, spacing: 12) {
+                    header
+                    paletteSwitcher
+                    Divider()
+                    colorValueCopyText
+                    Divider()
+                    customColors
+                    Divider()
+                    footerButtons
+                }
+                .padding(12)
+                .frame(width: 260)
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .onChange(of: colorPicker.pickedColor) { _, color in
+                    guard let color else { return }
+                    paletteStore.add(color: color)
+                    selectedColor = color
+                    colorPicker.pickedColor = nil
+                }
+                .onChange(of: colorPicker.lastError) { _, error in
+                    if let error {
+                        statusText = error
+                    }
+                }
+            }
+            
+            if page == .settings {
+                VStack(alignment: .leading, spacing: 12) {
+                    header
+                    SettingsView()
+                    Divider()
+                    footerButtons
+                }
+                .padding(12)
+                .frame(width: 260)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
+        .animation(.easeInOut(duration: 0.6), value: page)
     }
 
     private var header: some View {
@@ -197,19 +222,15 @@ struct MenuBarContentView: View {
             VStack(alignment: .leading, spacing: 4) {
                 formatRow(label: "hex:", value: hexValue) {
                     ClipboardManager.copy(hexValue)
-                    updateStatus(prefix: "Copied", formatLabel: "hex")
                 }
                 formatRow(label: "rgb:", value: rgbValue) {
                     ClipboardManager.copy(rgbValue)
-                    updateStatus(prefix: "Copied", formatLabel: "rgb")
                 }
                 formatRow(label: "hsl:", value: hslValue) {
                     ClipboardManager.copy(hslValue)
-                    updateStatus(prefix: "Copied", formatLabel: "hsl")
                 }
                 formatRow(label: "lch:", value: lchValue) {
                     ClipboardManager.copy(lchValue)
-                    updateStatus(prefix: "Copied", formatLabel: "lch")
                 }
             }
         }
@@ -250,20 +271,29 @@ struct MenuBarContentView: View {
         }
     }
 
-    private var statusLine: some View {
-        Text(statusText)
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .lineLimit(2)
-            .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
     private var footerButtons: some View {
         HStack {
-            SettingsLink {
-                Image(systemName: "gear")
-                    .font(.system(size: 12))
+//            SettingsLink {
+//                Image(systemName: "gear")
+//                    .font(.system(size: 12))
+//            }
+            if (page == .settings) {
+                Button(action: {
+                    goToPreviousPage()
+                }) {
+                    Image(systemName: "chevron.backward.circle")
+                        .font(.system(size: 12))
+                }
+            } else {
+                
+                Button(action: {
+                    goToNextPage()
+                }) {
+                    Image(systemName: "gear")
+                        .font(.system(size: 12))
+                }
             }
+            
             Spacer()
             Button(action: { NSApp.terminate(nil) }) {
                 Image(systemName: "power")
@@ -275,26 +305,22 @@ struct MenuBarContentView: View {
         .font(.caption)
     }
 
-    private func selectColor(_ color: NSColor) {
-        selectedColor = color
-        updateStatus(prefix: "Selected")
+    private func goToPreviousPage() {
+        guard let previous = Page(rawValue: page.rawValue - 1) else { return }
+        withAnimation(.easeInOut(duration: 0.2)) {
+            page = previous
+        }
     }
 
-    private func updateStatus(prefix: String, formatLabel: String? = nil) {
-        let label = formatLabel ?? lastCopiedFormat ?? "hex"
-        lastCopiedFormat = label
-        let value: String
-        switch label {
-        case "rgb":
-            value = rgbValue
-        case "hsl":
-            value = hslValue
-        case "lch":
-            value = lchValue
-        default:
-            value = hexValue
+    private func goToNextPage() {
+        guard let next = Page(rawValue: page.rawValue + 1) else { return }
+        withAnimation(.easeInOut(duration: 0.2)) {
+            page = next
         }
-        statusText = "\(prefix): \(value)"
+    }
+    
+    private func selectColor(_ color: NSColor) {
+        selectedColor = color
     }
 
     private var hexValue: String {
