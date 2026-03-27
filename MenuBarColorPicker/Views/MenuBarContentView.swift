@@ -11,19 +11,33 @@ struct MenuBarContentView: View {
     @AppStorage("hexUppercase") private var hexUppercase = true
     @AppStorage("hexPrefix") private var hexPrefix = true
     @AppStorage("showDockIcon") private var showDockIcon = false
+    @AppStorage("showFormatHex") private var showFormatHex = true
+    @AppStorage("showFormatRGB") private var showFormatRGB = true
+    @AppStorage("showFormatHSL") private var showFormatHSL = true
+    @AppStorage("showFormatHSB") private var showFormatHSB = true
+    @AppStorage("showFormatCMYK") private var showFormatCMYK = true
+    @AppStorage("showFormatLAB") private var showFormatLAB = true
+    @AppStorage("showFormatLCH") private var showFormatLCH = true
     
     @State private var statusText: String = " "
     @State private var paletteMode: PaletteMode = .spectrum
-    @State private var selectedColor: NSColor?
+    @State private var selectedColor: SRGBColor?
     @State private var lastCopiedFormat: String?
     @State private var hexInput: String = ""
     @State private var rgbInput: String = ""
     @State private var hslInput: String = ""
+    @State private var hsbInput: String = ""
+    @State private var cmykInput: String = ""
+    @State private var labInput: String = ""
     @State private var lchInput: String = ""
     @State private var isUpdatingFormatFields = false
+    @State private var isSyncScheduled = false
     @State private var hexInputInvalid = false
     @State private var rgbInputInvalid = false
     @State private var hslInputInvalid = false
+    @State private var hsbInputInvalid = false
+    @State private var cmykInputInvalid = false
+    @State private var labInputInvalid = false
     @State private var lchInputInvalid = false
 
     private enum Page: Int, CaseIterable {
@@ -50,13 +64,13 @@ struct MenuBarContentView: View {
                     footerButtons
                 }
                 .padding(12)
-                .frame(width: 260)
+                .frame(width: 280)
                 .transition(.move(edge: .top).combined(with: .opacity))
                 .onChange(of: colorPicker.pickedColor) { _, color in
                     guard let color else { return }
                     paletteStore.add(color: color)
-                    selectedColor = color
-                    syncFormatFields(from: color)
+                    setSelectedColor(SRGBColor(color))
+                    scheduleFormatSync()
                     colorPicker.pickedColor = nil
                 }
                 .onChange(of: colorPicker.lastError) { _, error in
@@ -65,11 +79,9 @@ struct MenuBarContentView: View {
                     }
                 }
                 .onAppear {
-                    syncFormatFields(from: selectedColor)
+                    scheduleFormatSync()
                 }
-                .onChange(of: selectedColor) { _, color in
-                    syncFormatFields(from: color)
-                }
+                .onChange(of: selectedColor) { _, _ in scheduleFormatSync() }
             }
             
             if page == .settings {
@@ -80,11 +92,18 @@ struct MenuBarContentView: View {
                     footerButtons
                 }
                 .padding(12)
-                .frame(width: 260)
+                .frame(width: 200)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .animation(.easeInOut(duration: 0.6), value: page)
+        .onChange(of: showFormatHex) { _, _ in scheduleFormatSync() }
+        .onChange(of: showFormatRGB) { _, _ in scheduleFormatSync() }
+        .onChange(of: showFormatHSL) { _, _ in scheduleFormatSync() }
+        .onChange(of: showFormatHSB) { _, _ in scheduleFormatSync() }
+        .onChange(of: showFormatCMYK) { _, _ in scheduleFormatSync() }
+        .onChange(of: showFormatLAB) { _, _ in scheduleFormatSync() }
+        .onChange(of: showFormatLCH) { _, _ in scheduleFormatSync() }
     }
 
     private var header: some View {
@@ -132,7 +151,7 @@ struct MenuBarContentView: View {
                         selectColor(color)
                     },
                     onAdd: { color in
-                        paletteStore.add(color: color)
+                        paletteStore.add(color: color.nsColor)
                     }, selectedColor: $selectedColor
                 )
                 Spacer()
@@ -152,7 +171,7 @@ struct MenuBarContentView: View {
                         selectColor(color)
                     },
                     onAdd: { color in
-                        paletteStore.add(color: color)
+                        paletteStore.add(color: color.nsColor)
                     }, selectedColor: $selectedColor
                 )
                 Spacer()
@@ -188,7 +207,7 @@ struct MenuBarContentView: View {
                         selectColor(color)
                     },
                     onAdd: { color in
-                        paletteStore.add(color: color)
+                        paletteStore.add(color: color.nsColor)
                     }, selectedColor: $selectedColor
                 )
                 Spacer()
@@ -211,15 +230,8 @@ struct MenuBarContentView: View {
                 }
                 .pickerStyle(.segmented)
                 .labelsHidden()
-                
+
                 Spacer()
-                
-                Button() {
-                    colorPicker.toggle()
-                } label: {
-                    Image(systemName: colorPicker.isActive ? "eyedropper" : "eyedropper.full")
-                }
-                .buttonStyle(.plain)
             }
             switch paletteMode {
             case .swatches:
@@ -243,15 +255,27 @@ struct MenuBarContentView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            CurrentColorPreviewView(
-                color: currentColor(),
-                onCopy: { color in
-                    ClipboardManager.copy(ColorFormatter.hexString(color, uppercase: true, prefix: true))
-                },
-                onAdd: { color in
-                    onAdd(color)
+            
+            HStack {
+                Button() {
+                    colorPicker.toggle()
+                } label: {
+                    Image(systemName: colorPicker.isActive ? "eyedropper" : "eyedropper.full")
                 }
-            )
+//                .buttonStyle(.plain)
+                
+                Spacer()
+                
+                CurrentColorPreviewView(
+                    color: currentColor(),
+                    onCopy: { color in
+                        ClipboardManager.copy(ColorFormatter.hexString(color, uppercase: true, prefix: true))
+                    },
+                    onAdd: { color in
+                        onAdd(color)
+                    }
+                )
+            }
         }
     }
     
@@ -263,17 +287,40 @@ struct MenuBarContentView: View {
                     .foregroundStyle(.secondary)
             }
             VStack(alignment: .leading, spacing: 4) {
-                formatRow(label: "hex:", text: $hexInput, copyValue: hexValue, isInvalid: hexInputInvalid) {
-                    applyHexInput()
+                if showFormatHex {
+                    formatRow(label: "hex:", text: $hexInput, copyValue: hexValue, isInvalid: hexInputInvalid) {
+                        applyHexInput()
+                    }
                 }
-                formatRow(label: "rgb:", text: $rgbInput, copyValue: rgbValue, isInvalid: rgbInputInvalid) {
-                    applyRGBInput()
+                if showFormatRGB {
+                    formatRow(label: "rgb:", text: $rgbInput, copyValue: rgbValue, isInvalid: rgbInputInvalid) {
+                        applyRGBInput()
+                    }
                 }
-                formatRow(label: "hsl:", text: $hslInput, copyValue: hslValue, isInvalid: hslInputInvalid) {
-                    applyHSLInput()
+                if showFormatHSL {
+                    formatRow(label: "hsl:", text: $hslInput, copyValue: hslValue, isInvalid: hslInputInvalid) {
+                        applyHSLInput()
+                    }
                 }
-                formatRow(label: "lch:", text: $lchInput, copyValue: lchValue, isInvalid: lchInputInvalid) {
-                    applyLCHInput()
+                if showFormatHSB {
+                    formatRow(label: "hsb:", text: $hsbInput, copyValue: hsbValue, isInvalid: hsbInputInvalid) {
+                        applyHSBInput()
+                    }
+                }
+                if showFormatCMYK {
+                    formatRow(label: "cmyk:", text: $cmykInput, copyValue: cmykValue, isInvalid: cmykInputInvalid) {
+                        applyCMYKInput()
+                    }
+                }
+                if showFormatLAB {
+                    formatRow(label: "lab:", text: $labInput, copyValue: labValue, isInvalid: labInputInvalid) {
+                        applyLABInput()
+                    }
+                }
+                if showFormatLCH {
+                    formatRow(label: "lch:", text: $lchInput, copyValue: lchValue, isInvalid: lchInputInvalid) {
+                        applyLCHInput()
+                    }
                 }
             }
 
@@ -306,10 +353,13 @@ struct MenuBarContentView: View {
     }
 
     private var formatValidationMessage: String? {
-        if hexInputInvalid { return "Ungueltiges HEX-Format" }
-        if rgbInputInvalid { return "Ungueltiges RGB-Format" }
-        if hslInputInvalid { return "Ungueltiges HSL-Format" }
-        if lchInputInvalid { return "Ungueltiges LCH-Format" }
+        if showFormatHex, hexInputInvalid { return "Ungueltiges HEX-Format" }
+        if showFormatRGB, rgbInputInvalid { return "Ungueltiges RGB-Format" }
+        if showFormatHSL, hslInputInvalid { return "Ungueltiges HSL-Format" }
+        if showFormatHSB, hsbInputInvalid { return "Ungueltiges HSB-Format" }
+        if showFormatCMYK, cmykInputInvalid { return "Ungueltiges CMYK-Format" }
+        if showFormatLAB, labInputInvalid { return "Ungueltiges LAB-Format" }
+        if showFormatLCH, lchInputInvalid { return "Ungueltiges LCH-Format" }
         return nil
     }
     
@@ -408,33 +458,49 @@ struct MenuBarContentView: View {
     }
     
     private func selectColor(_ color: NSColor) {
-        selectedColor = color
-        syncFormatFields(from: color)
+        setSelectedColor(SRGBColor(color))
+        scheduleFormatSync()
     }
 
-    private func syncFormatFields(from color: NSColor?) {
+    private func selectColor(_ color: SRGBColor) {
+        setSelectedColor(color)
+        scheduleFormatSync()
+    }
+
+    private func setSelectedColor(_ color: SRGBColor?) {
+        selectedColor = color?.clamped()
+    }
+
+    private func scheduleFormatSync() {
+        guard !isSyncScheduled else { return }
+        isSyncScheduled = true
+        DispatchQueue.main.async {
+            isSyncScheduled = false
+            syncFormatFields(from: selectedColor)
+        }
+    }
+
+    private func syncFormatFields(from color: SRGBColor?) {
         guard !isUpdatingFormatFields else { return }
         isUpdatingFormatFields = true
         defer { isUpdatingFormatFields = false }
         guard let color else {
-            hexInput = ""
-            rgbInput = ""
-            hslInput = ""
-            lchInput = ""
-            hexInputInvalid = false
-            rgbInputInvalid = false
-            hslInputInvalid = false
-            lchInputInvalid = false
+            if showFormatHex { hexInput = ""; hexInputInvalid = false }
+            if showFormatRGB { rgbInput = ""; rgbInputInvalid = false }
+            if showFormatHSL { hslInput = ""; hslInputInvalid = false }
+            if showFormatHSB { hsbInput = ""; hsbInputInvalid = false }
+            if showFormatCMYK { cmykInput = ""; cmykInputInvalid = false }
+            if showFormatLAB { labInput = ""; labInputInvalid = false }
+            if showFormatLCH { lchInput = ""; lchInputInvalid = false }
             return
         }
-        hexInput = formattedHex(for: color)
-        rgbInput = formattedRGB(for: color)
-        hslInput = formattedHSL(for: color)
-        lchInput = formattedLCH(for: color)
-        hexInputInvalid = false
-        rgbInputInvalid = false
-        hslInputInvalid = false
-        lchInputInvalid = false
+        if showFormatHex { hexInput = formattedHex(for: color); hexInputInvalid = false } else { hexInput = "" }
+        if showFormatRGB { rgbInput = formattedRGB(for: color); rgbInputInvalid = false } else { rgbInput = "" }
+        if showFormatHSL { hslInput = formattedHSL(for: color); hslInputInvalid = false } else { hslInput = "" }
+        if showFormatHSB { hsbInput = formattedHSB(for: color); hsbInputInvalid = false } else { hsbInput = "" }
+        if showFormatCMYK { cmykInput = formattedCMYK(for: color); cmykInputInvalid = false } else { cmykInput = "" }
+        if showFormatLAB { labInput = formattedLAB(for: color); labInputInvalid = false } else { labInput = "" }
+        if showFormatLCH { lchInput = formattedLCH(for: color); lchInputInvalid = false } else { lchInput = "" }
     }
 
     private func applyHexInput() {
@@ -451,8 +517,8 @@ struct MenuBarContentView: View {
         }
 
         hexInputInvalid = false
-        selectedColor = color
-        syncFormatFields(from: color)
+        setSelectedColor(SRGBColor(color))
+        syncFormatFields(from: selectedColor)
     }
 
     private func applyRGBInput() {
@@ -462,8 +528,8 @@ struct MenuBarContentView: View {
             return
         }
         rgbInputInvalid = false
-        selectedColor = color
-        syncFormatFields(from: color)
+        setSelectedColor(color)
+        syncFormatFields(from: selectedColor)
     }
 
     private func applyHSLInput() {
@@ -473,8 +539,8 @@ struct MenuBarContentView: View {
             return
         }
         hslInputInvalid = false
-        selectedColor = color
-        syncFormatFields(from: color)
+        setSelectedColor(color)
+        syncFormatFields(from: selectedColor)
     }
 
     private func applyLCHInput() {
@@ -484,60 +550,130 @@ struct MenuBarContentView: View {
             return
         }
         lchInputInvalid = false
-        selectedColor = color
-        syncFormatFields(from: color)
+        setSelectedColor(color)
+        syncFormatFields(from: selectedColor)
     }
 
-    private func formattedHex(for color: NSColor) -> String {
-        let alpha = color.srgb.alphaComponent
-        if alpha < 0.999 {
-            return ColorFormatter.hexStringWithAlpha(color, uppercase: hexUppercase, prefix: hexPrefix)
+    private func applyHSBInput() {
+        guard !isUpdatingFormatFields else { return }
+        guard let color = parseHSB(hsbInput) else {
+            hsbInputInvalid = true
+            return
         }
-        return ColorFormatter.hexString(color, uppercase: hexUppercase, prefix: hexPrefix)
+        hsbInputInvalid = false
+        setSelectedColor(color)
+        syncFormatFields(from: selectedColor)
     }
 
-    private func formattedRGB(for color: NSColor) -> String {
-        let alpha = color.srgb.alphaComponent
-        if alpha < 0.999 {
-            return ColorFormatter.rgbaString(color)
+    private func applyCMYKInput() {
+        guard !isUpdatingFormatFields else { return }
+        guard let color = parseCMYK(cmykInput) else {
+            cmykInputInvalid = true
+            return
         }
-        return ColorFormatter.rgbString(color)
+        cmykInputInvalid = false
+        setSelectedColor(color)
+        syncFormatFields(from: selectedColor)
     }
 
-    private func formattedHSL(for color: NSColor) -> String {
-        let alpha = color.srgb.alphaComponent
-        if alpha < 0.999 {
-            return ColorFormatter.hslaString(color)
+    private func applyLABInput() {
+        guard !isUpdatingFormatFields else { return }
+        guard let color = parseLAB(labInput) else {
+            labInputInvalid = true
+            return
         }
-        return ColorFormatter.hslString(color)
+        labInputInvalid = false
+        setSelectedColor(color)
+        syncFormatFields(from: selectedColor)
     }
 
-    private func formattedLCH(for color: NSColor) -> String {
-        ColorFormatter.lchString(color)
+    private func formattedHex(for color: SRGBColor) -> String {
+        let nsColor = color.nsColor
+        let alpha = nsColor.srgb.alphaComponent
+        if alpha < 0.999 {
+            return ColorFormatter.hexStringWithAlpha(nsColor, uppercase: hexUppercase, prefix: hexPrefix)
+        }
+        return ColorFormatter.hexString(nsColor, uppercase: hexUppercase, prefix: hexPrefix)
     }
 
-    private func parseRGB(_ text: String) -> NSColor? {
+    private func formattedRGB(for color: SRGBColor) -> String {
+        let nsColor = color.nsColor
+        let alpha = nsColor.srgb.alphaComponent
+        if alpha < 0.999 {
+            return ColorFormatter.rgbaString(nsColor)
+        }
+        return ColorFormatter.rgbString(nsColor)
+    }
+
+    private func formattedHSL(for color: SRGBColor) -> String {
+        let nsColor = color.nsColor
+        let alpha = nsColor.srgb.alphaComponent
+        if alpha < 0.999 {
+            return ColorFormatter.hslaString(nsColor)
+        }
+        return ColorFormatter.hslString(nsColor)
+    }
+
+    private func formattedHSB(for color: SRGBColor) -> String {
+        let c = color.nsColor.srgb
+        var h: CGFloat = 0
+        var s: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        c.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+        let hDeg = Int((h * 360.0).rounded())
+        let sPct = Int((s * 100.0).rounded())
+        let bPct = Int((b * 100.0).rounded())
+        return "hsb(\(hDeg), \(sPct)%, \(bPct)%)"
+    }
+
+    private func formattedCMYK(for color: SRGBColor) -> String {
+        let c = color.nsColor.srgb
+        let r = c.redComponent
+        let g = c.greenComponent
+        let b = c.blueComponent
+        let k = 1.0 - max(r, max(g, b))
+        let denom = max(1.0 - k, 0.0001)
+        let cVal = (1.0 - r - k) / denom
+        let mVal = (1.0 - g - k) / denom
+        let yVal = (1.0 - b - k) / denom
+        let cPct = Int((clamp01(cVal) * 100.0).rounded())
+        let mPct = Int((clamp01(mVal) * 100.0).rounded())
+        let yPct = Int((clamp01(yVal) * 100.0).rounded())
+        let kPct = Int((clamp01(k) * 100.0).rounded())
+        return "cmyk(\(cPct)%, \(mPct)%, \(yPct)%, \(kPct)%)"
+    }
+
+    private func formattedLAB(for color: SRGBColor) -> String {
+        ColorFormatter.labString(color.nsColor)
+    }
+
+    private func formattedLCH(for color: SRGBColor) -> String {
+        ColorFormatter.lchString(color.nsColor)
+    }
+
+    private func parseRGB(_ text: String) -> SRGBColor? {
         let values = extractNumbers(from: text)
         if values.count == 3 {
-            return NSColor(
-                red: clamp01(values[0] / 255.0),
-                green: clamp01(values[1] / 255.0),
-                blue: clamp01(values[2] / 255.0),
-                alpha: 1.0
+            return SRGBColor(
+                r: Double(clamp01(values[0] / 255.0)),
+                g: Double(clamp01(values[1] / 255.0)),
+                b: Double(clamp01(values[2] / 255.0)),
+                a: 1.0
             )
         }
         if values.count == 4 {
-            return NSColor(
-                red: clamp01(values[0] / 255.0),
-                green: clamp01(values[1] / 255.0),
-                blue: clamp01(values[2] / 255.0),
-                alpha: clamp01(values[3])
+            return SRGBColor(
+                r: Double(clamp01(values[0] / 255.0)),
+                g: Double(clamp01(values[1] / 255.0)),
+                b: Double(clamp01(values[2] / 255.0)),
+                a: Double(clamp01(values[3]))
             )
         }
         return nil
     }
 
-    private func parseHSL(_ text: String) -> NSColor? {
+    private func parseHSL(_ text: String) -> SRGBColor? {
         let values = extractNumbers(from: text)
         guard values.count == 3 || values.count == 4 else { return nil }
         let h = values[0].truncatingRemainder(dividingBy: 360.0)
@@ -559,15 +695,15 @@ struct MenuBarContentView: View {
         default: tuple = (c, 0, x)
         }
 
-        return NSColor(
-            red: clamp01(tuple.0 + m),
-            green: clamp01(tuple.1 + m),
-            blue: clamp01(tuple.2 + m),
-            alpha: alpha
+        return SRGBColor(
+            r: Double(clamp01(tuple.0 + m)),
+            g: Double(clamp01(tuple.1 + m)),
+            b: Double(clamp01(tuple.2 + m)),
+            a: Double(alpha)
         )
     }
 
-    private func parseLCH(_ text: String) -> NSColor? {
+    private func parseLCH(_ text: String) -> SRGBColor? {
         let values = extractNumbers(from: text)
         guard values.count == 3 else { return nil }
 
@@ -578,7 +714,72 @@ struct MenuBarContentView: View {
         let a = c * cos(hRad)
         let b = c * sin(hRad)
 
-        return ColorFormatter.labToSRGBColor(l: l, a: a, b: b)
+        guard let base = ColorFormatter.labToSRGBColor(l: l, a: a, b: b) else { return nil }
+        return SRGBColor(base)
+    }
+
+    private func parseHSB(_ text: String) -> SRGBColor? {
+        let values = extractNumbers(from: text)
+        guard values.count == 3 || values.count == 4 else { return nil }
+        var h = values[0]
+        var s = values[1]
+        var br = values[2]
+        let alpha = values.count == 4 ? values[3] : 1.0
+
+        if h <= 1.0, s <= 1.0, br <= 1.0 {
+            h = h * 360.0
+        }
+        if s > 1.0 { s = s / 100.0 }
+        if br > 1.0 { br = br / 100.0 }
+
+        let hue = clamp01(h / 360.0)
+        let sat = clamp01(s)
+        let bri = clamp01(br)
+        let a = clamp01(alpha > 1.0 ? alpha / 100.0 : alpha)
+
+        return SRGBColor.fromHSB(
+            h: Double(hue),
+            s: Double(sat),
+            b: Double(bri),
+            alpha: Double(a)
+        )
+    }
+
+    private func parseCMYK(_ text: String) -> SRGBColor? {
+        let values = extractNumbers(from: text)
+        guard values.count == 4 || values.count == 5 else { return nil }
+        var c = values[0]
+        var m = values[1]
+        var y = values[2]
+        var k = values[3]
+        let alpha = values.count == 5 ? values[4] : 1.0
+
+        if c > 1.0 { c = c / 100.0 }
+        if m > 1.0 { m = m / 100.0 }
+        if y > 1.0 { y = y / 100.0 }
+        if k > 1.0 { k = k / 100.0 }
+
+        let a = clamp01(alpha > 1.0 ? alpha / 100.0 : alpha)
+
+        return SRGBColor.fromCMYK(
+            c: Double(clamp01(c)),
+            m: Double(clamp01(m)),
+            y: Double(clamp01(y)),
+            k: Double(clamp01(k)),
+            alpha: Double(a)
+        )
+    }
+
+    private func parseLAB(_ text: String) -> SRGBColor? {
+        let values = extractNumbers(from: text)
+        guard values.count == 3 || values.count == 4 else { return nil }
+        let l = values[0]
+        let aVal = values[1]
+        let bVal = values[2]
+        let alpha = values.count == 4 ? values[3] : 1.0
+        guard let base = ColorFormatter.labToSRGBColor(l: l, a: aVal, b: bVal) else { return nil }
+        let withAlpha = base.withAlphaComponent(clamp01(alpha > 1.0 ? alpha / 100.0 : alpha))
+        return SRGBColor(withAlpha)
     }
 
     private func extractNumbers(from text: String) -> [CGFloat] {
@@ -588,6 +789,11 @@ struct MenuBarContentView: View {
             .replacingOccurrences(of: "rgb", with: "")
             .replacingOccurrences(of: "hsla", with: "")
             .replacingOccurrences(of: "hsl", with: "")
+            .replacingOccurrences(of: "hsba", with: "")
+            .replacingOccurrences(of: "hsb", with: "")
+            .replacingOccurrences(of: "cmyk", with: "")
+            .replacingOccurrences(of: "laba", with: "")
+            .replacingOccurrences(of: "lab", with: "")
             .replacingOccurrences(of: "lch", with: "")
             .replacingOccurrences(of: "(", with: "")
             .replacingOccurrences(of: ")", with: "")
@@ -603,7 +809,7 @@ struct MenuBarContentView: View {
     }
 
     private func currentColor() -> NSColor {
-        selectedColor ?? .white
+        selectedColor?.nsColor ?? .white
     }
 
     private func onAdd(_ color: NSColor) {
@@ -625,17 +831,19 @@ struct MenuBarContentView: View {
     }
 
     private func importCustomColors() {
-        let panel = NSOpenPanel()
-        panel.allowedContentTypes = [.json]
-        panel.canChooseFiles = true
-        panel.canChooseDirectories = false
-        panel.allowsMultipleSelection = false
-        let response = panel.runModal()
-        guard response == .OK, let url = panel.url else { return }
-        if paletteStore.importFromJSON(url: url) {
-            statusText = "Custom colors loaded"
-        } else {
-            statusText = "Failed to load custom colors"
+        DispatchQueue.main.async {
+            let panel = NSOpenPanel()
+            panel.allowedContentTypes = [.json]
+            panel.canChooseFiles = true
+            panel.canChooseDirectories = false // nur Dateien auswählbar!
+            panel.allowsMultipleSelection = false
+            let response = panel.runModal()
+            guard response == .OK, let url = panel.url else { return }
+            if paletteStore.importFromJSON(url: url) {
+                statusText = "Custom colors loaded"
+            } else {
+                statusText = "Failed to load custom colors"
+            }
         }
     }
 
@@ -654,6 +862,21 @@ struct MenuBarContentView: View {
         return formattedHSL(for: color)
     }
 
+    private var hsbValue: String {
+        guard let color = selectedColor else { return "" }
+        return formattedHSB(for: color)
+    }
+
+    private var cmykValue: String {
+        guard let color = selectedColor else { return "" }
+        return formattedCMYK(for: color)
+    }
+
+    private var labValue: String {
+        guard let color = selectedColor else { return "" }
+        return formattedLAB(for: color)
+    }
+
     private var lchValue: String {
         guard let color = selectedColor else { return "" }
         return formattedLCH(for: color)
@@ -661,25 +884,59 @@ struct MenuBarContentView: View {
 
     @ViewBuilder
     private func formatContextMenu(for color: NSColor, name: String, allowRemove: Bool, remove: (() -> Void)?) -> some View {
-        Button("Copy Hex") {
-            let alpha = color.srgb.alphaComponent
-            let value = alpha < 0.999
-                ? ColorFormatter.hexStringWithAlpha(color, uppercase: hexUppercase, prefix: hexPrefix)
-                : ColorFormatter.hexString(color, uppercase: hexUppercase, prefix: hexPrefix)
-            ClipboardManager.copy(value)
-            statusText = "\(name): \(value) copied"
+        if showFormatHex {
+            Button("Copy Hex") {
+                let alpha = color.srgb.alphaComponent
+                let value = alpha < 0.999
+                    ? ColorFormatter.hexStringWithAlpha(color, uppercase: hexUppercase, prefix: hexPrefix)
+                    : ColorFormatter.hexString(color, uppercase: hexUppercase, prefix: hexPrefix)
+                ClipboardManager.copy(value)
+                statusText = "\(name): \(value) copied"
+            }
         }
-        Button("Copy RGB") {
-            let alpha = color.srgb.alphaComponent
-            let value = alpha < 0.999 ? ColorFormatter.rgbaString(color) : ColorFormatter.rgbString(color)
-            ClipboardManager.copy(value)
-            statusText = "\(name): \(value) copied"
+        if showFormatRGB {
+            Button("Copy RGB") {
+                let alpha = color.srgb.alphaComponent
+                let value = alpha < 0.999 ? ColorFormatter.rgbaString(color) : ColorFormatter.rgbString(color)
+                ClipboardManager.copy(value)
+                statusText = "\(name): \(value) copied"
+            }
         }
-        Button("Copy HSL") {
-            let alpha = color.srgb.alphaComponent
-            let value = alpha < 0.999 ? ColorFormatter.hslaString(color) : ColorFormatter.hslString(color)
-            ClipboardManager.copy(value)
-            statusText = "\(name): \(value) copied"
+        if showFormatHSL {
+            Button("Copy HSL") {
+                let alpha = color.srgb.alphaComponent
+                let value = alpha < 0.999 ? ColorFormatter.hslaString(color) : ColorFormatter.hslString(color)
+                ClipboardManager.copy(value)
+                statusText = "\(name): \(value) copied"
+            }
+        }
+        if showFormatHSB {
+            Button("Copy HSB") {
+                let value = formattedHSB(for: SRGBColor(color) ?? SRGBColor(r: 0, g: 0, b: 0))
+                ClipboardManager.copy(value)
+                statusText = "\(name): \(value) copied"
+            }
+        }
+        if showFormatCMYK {
+            Button("Copy CMYK") {
+                let value = formattedCMYK(for: SRGBColor(color) ?? SRGBColor(r: 0, g: 0, b: 0))
+                ClipboardManager.copy(value)
+                statusText = "\(name): \(value) copied"
+            }
+        }
+        if showFormatLAB {
+            Button("Copy LAB") {
+                let value = formattedLAB(for: SRGBColor(color) ?? SRGBColor(r: 0, g: 0, b: 0))
+                ClipboardManager.copy(value)
+                statusText = "\(name): \(value) copied"
+            }
+        }
+        if showFormatLCH {
+            Button("Copy LCH") {
+                let value = formattedLCH(for: SRGBColor(color) ?? SRGBColor(r: 0, g: 0, b: 0))
+                ClipboardManager.copy(value)
+                statusText = "\(name): \(value) copied"
+            }
         }
         if allowRemove, let remove {
             Divider()

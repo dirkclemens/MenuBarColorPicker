@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct ColorSliderView: View {
+    
     enum Mode: String, CaseIterable, Identifiable {
         case rgb
         case hsb
+        case cmyk
         case gray
 
         var id: String { rawValue }
@@ -12,15 +14,17 @@ struct ColorSliderView: View {
             switch self {
             case .rgb: return "RGB"
             case .hsb: return "HSB"
+            case .cmyk: return "CMYK"
             case .gray: return "Gray"
             }
         }
     }
 
-    var onSelect: (NSColor) -> Void
-    var onAdd: (NSColor) -> Void
-    @Binding var selectedColor: NSColor?
+    var onSelect: (SRGBColor) -> Void
+    var onAdd: (SRGBColor) -> Void
+    @Binding var selectedColor: SRGBColor?
     
+    @AppStorage("showFormatCMYK") private var showFormatCMYK = true
     @State private var mode: Mode = .rgb
 
     @State private var r: Double = 1.0
@@ -31,8 +35,15 @@ struct ColorSliderView: View {
     @State private var s: Double = 1.0
     @State private var br: Double = 1.0
 
+    @State private var c: Double = 0.0
+    @State private var m: Double = 0.0
+    @State private var y: Double = 0.0
+    @State private var k: Double = 0.0
+
     @State private var gray: Double = 0.5
     @State private var opacity: Double = 1.0
+    @State private var isSyncing = false
+    @State private var isSelectScheduled = false
 
     private let squareSize: CGFloat = 160
     private let sliderHeight: CGFloat = 16
@@ -48,8 +59,8 @@ struct ColorSliderView: View {
                             .stroke(Color.gray.opacity(0.08), lineWidth: 1)
                     )
                 VStack(spacing: 10) {
-                    Picker("Mode", selection: $mode) {
-                        ForEach(Mode.allCases) { mode in
+                    Picker("", selection: $mode) {
+                        ForEach(availableModes) { mode in
                             Text(mode.label).tag(mode)
                         }
                     }
@@ -60,6 +71,8 @@ struct ColorSliderView: View {
                         rgbSliders
                     case .hsb:
                         hsbSliders
+                    case .cmyk:
+                        cmykSliders
                     case .gray:
                         graySliders
                     }
@@ -75,10 +88,31 @@ struct ColorSliderView: View {
         .onChange(of: selectedColor) { _, _ in
             syncFromSelectedColor()
         }
+        .onChange(of: showFormatCMYK) { _, _ in
+            if !showFormatCMYK, mode == .cmyk {
+                mode = .rgb
+            }
+        }
+    }
+
+    private var availableModes: [Mode] {
+        var modes: [Mode] = [.rgb, .hsb, .gray]
+        if showFormatCMYK {
+            modes.insert(.cmyk, at: 2)
+        }
+        return modes
     }
 
     private func syncFromSelectedColor() {
-        guard let color = selectedColor?.usingColorSpace(.deviceRGB) else { return }
+        guard !isSyncing else { return }
+        isSyncing = true
+        defer {
+            DispatchQueue.main.async {
+                isSyncing = false
+            }
+        }
+        guard let selected = selectedColor else { return }
+        let color = selected.nsColor
 
         var rr: CGFloat = 0
         var gg: CGFloat = 0
@@ -99,6 +133,13 @@ struct ColorSliderView: View {
         s = Double(ss)
         br = Double(brr)
 
+        let kVal = 1.0 - max(rr, max(gg, bb))
+        let denom = max(1.0 - kVal, 0.0001)
+        c = Double((1.0 - rr - kVal) / denom)
+        m = Double((1.0 - gg - kVal) / denom)
+        y = Double((1.0 - bb - kVal) / denom)
+        k = Double(kVal)
+
         gray = Double((rr + gg + bb) / 3.0)
     }
 
@@ -108,9 +149,9 @@ struct ColorSliderView: View {
             gradientSliderRow(label: "G", value: $g, gradient: Gradient(colors: [Color(red: r, green: 0, blue: b), Color(red: r, green: 1, blue: b)]))
             gradientSliderRow(label: "B", value: $b, gradient: Gradient(colors: [Color(red: r, green: g, blue: 0), Color(red: r, green: g, blue: 1)]))
         }
-        .onChange(of: r) { _, _ in onSelect(currentColor()) }
-        .onChange(of: g) { _, _ in onSelect(currentColor()) }
-        .onChange(of: b) { _, _ in onSelect(currentColor()) }
+        .onChange(of: r) { _, _ in scheduleSelect() }
+        .onChange(of: g) { _, _ in scheduleSelect() }
+        .onChange(of: b) { _, _ in scheduleSelect() }
     }
 
     private var hsbSliders: some View {
@@ -125,16 +166,41 @@ struct ColorSliderView: View {
                 Color(hue: h, saturation: s, brightness: 1)
             ]))
         }
-        .onChange(of: h) { _, _ in onSelect(currentColor()) }
-        .onChange(of: s) { _, _ in onSelect(currentColor()) }
-        .onChange(of: br) { _, _ in onSelect(currentColor()) }
+        .onChange(of: h) { _, _ in scheduleSelect() }
+        .onChange(of: s) { _, _ in scheduleSelect() }
+        .onChange(of: br) { _, _ in scheduleSelect() }
     }
 
     private var graySliders: some View {
         VStack(spacing: 6) {
             gradientSliderRow(label: "G", value: $gray, gradient: Gradient(colors: [.black, .white]))
         }
-        .onChange(of: gray) { _, _ in onSelect(currentColor()) }
+        .onChange(of: gray) { _, _ in scheduleSelect() }
+    }
+
+    private var cmykSliders: some View {
+        VStack(spacing: 6) {
+            gradientSliderRow(label: "C", value: $c, gradient: Gradient(colors: [
+                cmykColor(c: 0, m: m, y: y, k: k),
+                cmykColor(c: 1, m: m, y: y, k: k)
+            ]))
+            gradientSliderRow(label: "M", value: $m, gradient: Gradient(colors: [
+                cmykColor(c: c, m: 0, y: y, k: k),
+                cmykColor(c: c, m: 1, y: y, k: k)
+            ]))
+            gradientSliderRow(label: "Y", value: $y, gradient: Gradient(colors: [
+                cmykColor(c: c, m: m, y: 0, k: k),
+                cmykColor(c: c, m: m, y: 1, k: k)
+            ]))
+            gradientSliderRow(label: "K", value: $k, gradient: Gradient(colors: [
+                cmykColor(c: c, m: m, y: y, k: 0),
+                cmykColor(c: c, m: m, y: y, k: 1)
+            ]))
+        }
+        .onChange(of: c) { _, _ in scheduleSelect() }
+        .onChange(of: m) { _, _ in scheduleSelect() }
+        .onChange(of: y) { _, _ in scheduleSelect() }
+        .onChange(of: k) { _, _ in scheduleSelect() }
     }
 
     private var opacitySlider: some View {
@@ -142,7 +208,7 @@ struct ColorSliderView: View {
             currentSwiftUIColor().opacity(0.0),
             currentSwiftUIColor().opacity(1.0)
         ]))
-            .onChange(of: opacity) { _, _ in onSelect(currentColor()) }
+            .onChange(of: opacity) { _, _ in scheduleSelect() }
     }
 
     private func sliderRow(label: String, value: Binding<Double>, tint: Color) -> some View {
@@ -207,17 +273,44 @@ struct ColorSliderView: View {
     }
 
     private func currentSwiftUIColor() -> Color {
-        Color(nsColor: currentColor())
+        Color(nsColor: currentColor().nsColor)
     }
 
-    private func currentColor() -> NSColor {
+    private func currentColor() -> SRGBColor {
         switch mode {
         case .rgb:
-            return NSColor(red: r, green: g, blue: b, alpha: opacity)
+            return SRGBColor(r: r, g: g, b: b, a: opacity).clamped()
         case .hsb:
-            return NSColor(calibratedHue: h, saturation: s, brightness: br, alpha: opacity)
+            return SRGBColor.fromHSB(h: h, s: s, b: br, alpha: opacity)
+        case .cmyk:
+            return cmykToSRGB(c: c, m: m, y: y, k: k, alpha: opacity)
         case .gray:
-            return NSColor(white: gray, alpha: opacity)
+            return SRGBColor(r: gray, g: gray, b: gray, a: opacity).clamped()
+        }
+    }
+
+    private func cmykColor(c: Double, m: Double, y: Double, k: Double) -> Color {
+        return Color(nsColor: cmykToSRGB(c: c, m: m, y: y, k: k, alpha: 1.0).nsColor)
+    }
+
+    private func cmykToSRGB(c: Double, m: Double, y: Double, k: Double, alpha: Double) -> SRGBColor {
+        let cVal = max(0.0, min(1.0, c))
+        let mVal = max(0.0, min(1.0, m))
+        let yVal = max(0.0, min(1.0, y))
+        let kVal = max(0.0, min(1.0, k))
+        let r = (1.0 - cVal) * (1.0 - kVal)
+        let g = (1.0 - mVal) * (1.0 - kVal)
+        let b = (1.0 - yVal) * (1.0 - kVal)
+        return SRGBColor(r: r, g: g, b: b, a: max(0.0, min(1.0, alpha)))
+    }
+
+    private func scheduleSelect() {
+        guard !isSyncing else { return }
+        guard !isSelectScheduled else { return }
+        isSelectScheduled = true
+        DispatchQueue.main.async {
+            isSelectScheduled = false
+            onSelect(currentColor())
         }
     }
 }

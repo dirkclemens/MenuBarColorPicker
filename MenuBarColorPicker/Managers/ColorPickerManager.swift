@@ -166,3 +166,4 @@ final class ColorPickerManager: ObservableObject {
         return NSColor(red: r, green: g, blue: b, alpha: a)
     }
 }
+

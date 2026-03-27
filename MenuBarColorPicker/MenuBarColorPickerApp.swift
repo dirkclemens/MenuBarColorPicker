@@ -10,6 +10,8 @@ struct MenuBarColorPickerApp: App {
     @StateObject private var paletteStore = PaletteStore()
     @StateObject private var colorPicker = ColorPickerManager()
     @StateObject private var loginItemManager = LoginItemManager()
+    
+    @AppStorage("showMenuBarExtra") private var showMenuBarExtra = true
 
     init() {
         let showDockIcon = UserDefaults.standard.bool(forKey: "showDockIcon")
@@ -17,7 +19,7 @@ struct MenuBarColorPickerApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra("Color Picker", systemImage: "paintpalette") {
+        MenuBarExtra("Color Picker", systemImage: "paintpalette") {//}, isInserted: $showMenuBarExtra) {
             MenuBarContentView()
                 .environmentObject(paletteStore)
                 .environmentObject(colorPicker)
@@ -33,3 +35,4 @@ struct MenuBarColorPickerApp: App {
         }
     }
 }
+

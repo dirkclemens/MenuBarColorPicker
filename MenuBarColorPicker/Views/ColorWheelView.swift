@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct ColorWheelView: View {
-    var onSelect: (NSColor) -> Void
-    var onAdd: (NSColor) -> Void
-    @Binding var selectedColor: NSColor?
+    var onSelect: (SRGBColor) -> Void
+    var onAdd: (SRGBColor) -> Void
+    @Binding var selectedColor: SRGBColor?
 
     @State private var hue: Double = 0.55
     @State private var saturation: Double = 0.7
@@ -41,7 +41,7 @@ struct ColorWheelView: View {
     }
 
     private func syncFromSelectedColor() {
-        guard let color = selectedColor?.usingColorSpace(.deviceRGB) else { return }
+        guard let color = selectedColor?.nsColor else { return }
 
         var h: CGFloat = 0
         var s: CGFloat = 0
@@ -215,12 +215,13 @@ struct ColorWheelView: View {
         return Double(x / track)
     }
 
-    private func currentColor() -> NSColor {
-        NSColor(calibratedHue: hue, saturation: saturation, brightness: brightness, alpha: opacity)
+    private func currentColor() -> SRGBColor {
+        SRGBColor(NSColor(calibratedHue: hue, saturation: saturation, brightness: brightness, alpha: opacity))
+            ?? SRGBColor(r: 0, g: 0, b: 0, a: opacity)
     }
     
     private func currentSwiftUIColor() -> Color {
-        Color(nsColor: currentColor())
+        Color(nsColor: currentColor().nsColor)
     }
 
 }

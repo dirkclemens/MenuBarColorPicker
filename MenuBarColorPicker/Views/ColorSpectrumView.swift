@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct ColorSpectrumView: View {
-    var onSelect: (NSColor) -> Void
-    var onAdd: (NSColor) -> Void
-    @Binding var selectedColor: NSColor?
+    var onSelect: (SRGBColor) -> Void
+    var onAdd: (SRGBColor) -> Void
+    @Binding var selectedColor: SRGBColor?
     
     @State private var hue: Double = 0.55
     @State private var saturation: Double = 0.7
@@ -43,7 +43,7 @@ struct ColorSpectrumView: View {
     }
     
     private func syncFromSelectedColor() {
-        guard let color = selectedColor?.usingColorSpace(.deviceRGB) else { return }
+        guard let color = selectedColor?.nsColor else { return }
 
         var h: CGFloat = 0
         var s: CGFloat = 0
@@ -172,12 +172,13 @@ struct ColorSpectrumView: View {
         return Double(x / track)
     }
     
-    private func currentColor() -> NSColor {
-        NSColor(calibratedHue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
+    private func currentColor() -> SRGBColor {
+        SRGBColor(NSColor(calibratedHue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
+            ?? SRGBColor(r: 0, g: 0, b: 0, a: alpha)
     }
     
     private func currentSwiftUIColor() -> Color {
-        Color(nsColor: currentColor())
+        Color(nsColor: currentColor().nsColor)
     }
     
     private func baseSwiftUIColor() -> Color {

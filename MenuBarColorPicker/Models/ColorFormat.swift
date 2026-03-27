@@ -91,6 +91,13 @@ enum ColorFormatter {
         if h < 0 { h += 360.0 }
         return String(format: "lch(%.1f, %.1f, %.1f)", lab.l, cVal, h)
     }
+
+    static func labString(_ color: NSColor) -> String {
+        let c = color.srgb
+        let xyz = rgbToXyz(r: c.redComponent, g: c.greenComponent, b: c.blueComponent)
+        let lab = xyzToLab(x: xyz.x, y: xyz.y, z: xyz.z)
+        return String(format: "lab(%.1f, %.1f, %.1f)", lab.l, lab.a, lab.b)
+    }
     
     private static func rgbToHsl(r: CGFloat, g: CGFloat, b: CGFloat) -> (h: CGFloat, s: CGFloat, l: CGFloat) {
         let maxVal = max(r, g, b)

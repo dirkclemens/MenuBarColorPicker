@@ -7,6 +7,13 @@ struct SettingsView: View {
     @AppStorage("hexUppercase") private var hexUppercase = true
     @AppStorage("hexPrefix") private var hexPrefix = true
     @AppStorage("showDockIcon") private var showDockIcon = false
+    @AppStorage("showFormatHex") private var showFormatHex = true
+    @AppStorage("showFormatRGB") private var showFormatRGB = true
+    @AppStorage("showFormatHSL") private var showFormatHSL = true
+    @AppStorage("showFormatHSB") private var showFormatHSB = true
+    @AppStorage("showFormatCMYK") private var showFormatCMYK = true
+    @AppStorage("showFormatLAB") private var showFormatLAB = true
+    @AppStorage("showFormatLCH") private var showFormatLCH = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -14,6 +21,18 @@ struct SettingsView: View {
                 .font(.headline)
             Toggle("Hex uppercase", isOn: $hexUppercase)
             Toggle("Hex with # prefix", isOn: $hexPrefix)
+
+            Divider()
+
+            Text("Color Formats")
+                .font(.headline)
+            Toggle("HEX", isOn: $showFormatHex)
+            Toggle("RGB", isOn: $showFormatRGB)
+            Toggle("HSL", isOn: $showFormatHSL)
+            Toggle("HSB", isOn: $showFormatHSB)
+            Toggle("CMYK", isOn: $showFormatCMYK)
+            Toggle("LAB", isOn: $showFormatLAB)
+            Toggle("LCH", isOn: $showFormatLCH)
             
             Divider()
             
