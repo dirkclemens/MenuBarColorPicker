@@ -1,6 +1,6 @@
 # MenuBarColorPicker
 
-Eine macOS SwiftUI `MenuBarExtra` App, die eine kuratierte Farbpalette sowie eigene Farben anbietet und Farben in mehreren Formaten ins Clipboard kopieren kann.
+A macOS SwiftUI `MenuBarExtra` app that offers a curated color palette plus custom colors and can copy colors to the clipboard in multiple formats.
 
 ---
 
@@ -11,51 +11,51 @@ Eine macOS SwiftUI `MenuBarExtra` App, die eine kuratierte Farbpalette sowie eig
 ---
 
 ## Features
-- Fancy Farbpalette im Menu Bar Fenster
-- Kopieren in `Hex`, `RGB(A)`, `HSL(A)`, `HSB`, `CMYK`, `LAB`, `LCH`
-- Hex-Format konfigurierbar: `#` an/aus, `uppercase/lowercase`
-- Dock Icon an/aus
-- Autostart bei Anmeldung
-- Color Picker mit runder Lupe und Farbauswahl am Bildschirm
-- Persistente Liste eigener Farben (30 Slots)
-- Zusätzliche Farblisten: Developer, Web Safe, CSS Named Colors, RAL Classic (angenähert)
-- Formatfelder editierbar (Input in allen Formaten möglich)
-- Pro-Format Ein/Aus-Schalter zur Performance-Optimierung
+- Fancy color palette in the menu bar window
+- Copy in `Hex`, `RGB(A)`, `HSL(A)`, `HSB`, `CMYK`, `LAB`, `LCH`
+- Configurable hex format: `#` on/off, `uppercase/lowercase`
+- Dock icon on/off
+- Launch at login
+- Color picker with round loupe and on-screen color selection
+- Persistent list of custom colors (30 slots)
+- Additional color lists: Developer, Web Safe, CSS Named Colors, RAL Classic (approximated)
+- Editable format fields (input in all formats supported)
+- Per-format on/off switches for performance optimization
 
-## Anforderungen
-- macOS 14+ (Screen Recording Berechtigung wird fuer den Color Picker benoetigt)
+## Requirements
+- macOS 14+ (Screen Recording permission is required for the color picker)
 - Xcode 15+ (SwiftUI, MenuBarExtra)
 
 ## Build & Run
-1. Projekt in Xcode oeffnen (`MenuBarColorPicker.xcodeproj`)
+1. Open the project in Xcode (`MenuBarColorPicker.xcodeproj`)
 2. Build & Run
 
-## Bedienung
-- Swatch anklicken: selektiert die Farbe.
-- Unter `Color Formats` die Werte anzeigen und ueber den Copy-Button ins Clipboard kopieren.
-- Palette-Ansicht ueber die Icon-Schalter wechseln (Swatches, Color Wheel, Spectrum, Slider, Color List).
-- Color Picker starten: Farbe waehlen, wird zu den eigenen Farben hinzugefuegt und ins Clipboard kopiert.
-- Einstellungen ueber `Settings` oeffnen.
+## Usage
+- Click a swatch: selects the color.
+- Under `Color Formats`, view values and copy to the clipboard via the copy button.
+- Switch palette views via the icon toggles (Swatches, Color Wheel, Spectrum, Slider, Color List).
+- Start the color picker: choose a color, which is added to custom colors and copied to the clipboard.
+- Open settings via `Settings`.
 
-## Einstellungen
-- `Hex uppercase`: Gross- oder Kleinschreibung.
-- `Hex with # prefix`: Fuegt ein `#` voran.
-- `Color Formats`: Pro-Format anzeigen/ausblenden (HEX, RGB, HSL, HSB, CMYK, LAB, LCH).
-- `Show Dock icon`: Dock Icon an/aus.
-- `Launch at login`: Autostart bei Anmeldung.
+## Settings
+- `Hex uppercase`: Uppercase or lowercase.
+- `Hex with # prefix`: Adds a `#` prefix.
+- `Color Formats`: Show/hide per format (HEX, RGB, HSL, HSB, CMYK, LAB, LCH).
+- `Show Dock icon`: Dock icon on/off.
+- `Launch at login`: Autostart at login.
 
-## Color Picker Hinweis
-Der Color Picker nutzt Screen Recording fuer das Einlesen des Bildschirms. macOS kann dafuer eine Berechtigung verlangen. In manchen Setups wird auch Input Monitoring fuer globale Klicks benoetigt.
+## Color Picker Note
+The color picker uses Screen Recording to read the screen. macOS may require permission for this. In some setups, Input Monitoring is also required for global clicks.
 
 ## Persistence
-Eigene Farben werden als JSON in `UserDefaults` gespeichert. Die UI zeigt feste Platzhalter, sobald weniger als 30 Farben vorhanden sind.
+Custom colors are stored as JSON in `UserDefaults`. The UI shows fixed placeholders when fewer than 30 colors exist.
 
 ## TODO
-- [x] MenuBarExtra App-Struktur mit Settings Scene aufsetzen
-- [x] Fancy Palette UI mit Format-Auswahl und Clipboard Copy
-- [x] Hex-Optionen (Prefix/Uppercase) konfigurieren und anwenden
-- [x] Dock Icon Toggle
-- [x] Autostart Toggle (Login Item)
-- [x] Color Picker mit runder Lupe und Farbauswahl implementieren
-- [x] Persistente Liste eigener Farben inkl. Platzhaltern
-- [x] Dokumentation mit Funktionsdetails ergaenzen
+- [x] Set up MenuBarExtra app structure with Settings Scene
+- [x] Fancy palette UI with format selection and clipboard copy
+- [x] Configure and apply hex options (prefix/uppercase)
+- [x] Dock icon toggle
+- [x] Autostart toggle (Login Item)
+- [x] Implement color picker with round loupe and on-screen color selection
+- [x] Persistent list of custom colors including placeholders
+- [x] Expand documentation with functional details
