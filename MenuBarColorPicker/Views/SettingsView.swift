@@ -14,6 +14,7 @@ struct SettingsView: View {
     @AppStorage("showFormatCMYK") private var showFormatCMYK = true
     @AppStorage("showFormatLAB") private var showFormatLAB = true
     @AppStorage("showFormatLCH") private var showFormatLCH = true
+    @AppStorage("showFormatSwiftColor") private var showFormatSwiftColor = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -33,6 +34,7 @@ struct SettingsView: View {
             Toggle("CMYK", isOn: $showFormatCMYK)
             Toggle("LAB", isOn: $showFormatLAB)
             Toggle("LCH", isOn: $showFormatLCH)
+            Toggle("Swift Color(hue:)", isOn: $showFormatSwiftColor)
             
             Divider()
             

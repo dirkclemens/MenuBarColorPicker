@@ -18,6 +18,7 @@ struct MenuBarContentView: View {
     @AppStorage("showFormatCMYK") private var showFormatCMYK = true
     @AppStorage("showFormatLAB") private var showFormatLAB = true
     @AppStorage("showFormatLCH") private var showFormatLCH = true
+    @AppStorage("showFormatSwiftColor") private var showFormatSwiftColor = true
     
     @State private var statusText: String = " "
     @State private var paletteMode: PaletteMode = .spectrum
@@ -30,6 +31,7 @@ struct MenuBarContentView: View {
     @State private var cmykInput: String = ""
     @State private var labInput: String = ""
     @State private var lchInput: String = ""
+    @State private var swiftColorInput: String = ""
     @State private var isUpdatingFormatFields = false
     @State private var isSyncScheduled = false
     @State private var hexInputInvalid = false
@@ -104,6 +106,7 @@ struct MenuBarContentView: View {
         .onChange(of: showFormatCMYK) { _, _ in scheduleFormatSync() }
         .onChange(of: showFormatLAB) { _, _ in scheduleFormatSync() }
         .onChange(of: showFormatLCH) { _, _ in scheduleFormatSync() }
+        .onChange(of: showFormatSwiftColor) { _, _ in scheduleFormatSync() }
     }
 
     private var header: some View {
@@ -322,6 +325,9 @@ struct MenuBarContentView: View {
                         applyLCHInput()
                     }
                 }
+                if showFormatSwiftColor {
+                    formatRow(label: "swift:", text: $swiftColorInput, copyValue: swiftColorValue, isInvalid: false) {}
+                }
             }
 
             if let message = formatValidationMessage {
@@ -492,6 +498,7 @@ struct MenuBarContentView: View {
             if showFormatCMYK { cmykInput = ""; cmykInputInvalid = false }
             if showFormatLAB { labInput = ""; labInputInvalid = false }
             if showFormatLCH { lchInput = ""; lchInputInvalid = false }
+            if showFormatSwiftColor { swiftColorInput = "" }
             return
         }
         if showFormatHex { hexInput = formattedHex(for: color); hexInputInvalid = false } else { hexInput = "" }
@@ -501,6 +508,7 @@ struct MenuBarContentView: View {
         if showFormatCMYK { cmykInput = formattedCMYK(for: color); cmykInputInvalid = false } else { cmykInput = "" }
         if showFormatLAB { labInput = formattedLAB(for: color); labInputInvalid = false } else { labInput = "" }
         if showFormatLCH { lchInput = formattedLCH(for: color); lchInputInvalid = false } else { lchInput = "" }
+        if showFormatSwiftColor { swiftColorInput = formattedSwiftColor(for: color) } else { swiftColorInput = "" }
     }
 
     private func applyHexInput() {
@@ -650,6 +658,20 @@ struct MenuBarContentView: View {
 
     private func formattedLCH(for color: SRGBColor) -> String {
         ColorFormatter.lchString(color.nsColor)
+    }
+
+    private func formattedSwiftColor(for color: SRGBColor) -> String {
+        let c = color.nsColor.srgb
+        var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        c.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+        let hStr = String(format: "%.3f", h)
+        let sStr = String(format: "%.3f", s)
+        let bStr = String(format: "%.3f", b)
+        if a < 0.999 {
+            let aStr = String(format: "%.3f", a)
+            return "Color(hue: \(hStr), saturation: \(sStr), brightness: \(bStr), opacity: \(aStr))"
+        }
+        return "Color(hue: \(hStr), saturation: \(sStr), brightness: \(bStr))"
     }
 
     private func parseRGB(_ text: String) -> SRGBColor? {
@@ -880,6 +902,11 @@ struct MenuBarContentView: View {
     private var lchValue: String {
         guard let color = selectedColor else { return "" }
         return formattedLCH(for: color)
+    }
+
+    private var swiftColorValue: String {
+        guard let color = selectedColor else { return "" }
+        return formattedSwiftColor(for: color)
     }
 
     @ViewBuilder
