@@ -1,6 +1,6 @@
 # MenuBarColorPicker
 
-A macOS SwiftUI `MenuBarExtra` app that offers a curated color palette plus custom colors and can copy colors to the clipboard in multiple formats.
+MenuBarColorPicker is a macOS `MenuBarExtra` app that turns colour picking into a one-click affair. It offers a curated colour palette plus persistent custom colours, an on-screen loupe picker that reads any pixel on your display, and instant copy to the clipboard in every common colour format — ready to paste straight into code, design tools, or documents.
 
 ---
 
@@ -22,13 +22,32 @@ A macOS SwiftUI `MenuBarExtra` app that offers a curated color palette plus cust
 - Editable format fields (input in all formats supported)
 - Per-format on/off switches for performance optimization
 
+---
+
 ## Requirements
-- macOS 14+ (Screen Recording permission is required for the color picker)
+- macOS 15.2 or later (Screen Recording permission is required for the color picker)
+- Apple Silicon only
 - Xcode 15+ (SwiftUI, MenuBarExtra)
 
-## Build & Run
+---
+
+## Installation
+
+### Build from source
 1. Open the project in Xcode (`MenuBarColorPicker.xcodeproj`)
 2. Build & Run
+
+### Prebuilt DMG
+
+A ready-to-run build is available as `MenuBarColorPicker-1.0.dmg` (ad-hoc signed, Apple Silicon only). Since it isn't notarized by Apple, macOS blocks it on first launch. Remove the quarantine flag before opening:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/MenuBarColorPicker.app
+```
+
+Alternatively, right-click the app in Finder and choose "Open".
+
+---
 
 ## Usage
 - Click a swatch: selects the color.
@@ -50,12 +69,8 @@ The color picker uses Screen Recording to read the screen. macOS may require per
 ## Persistence
 Custom colors are stored as JSON in `UserDefaults`. The UI shows fixed placeholders when fewer than 30 colors exist.
 
-## TODO
-- [x] Set up MenuBarExtra app structure with Settings Scene
-- [x] Fancy palette UI with format selection and clipboard copy
-- [x] Configure and apply hex options (prefix/uppercase)
-- [x] Dock icon toggle
-- [x] Autostart toggle (Login Item)
-- [x] Implement color picker with round loupe and on-screen color selection
-- [x] Persistent list of custom colors including placeholders
-- [x] Expand documentation with functional details
+---
+
+## License
+
+This project is licensed under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0) — see [LICENSE](LICENSE) for details. Free for noncommercial use; commercial use requires a separate license from the author.
