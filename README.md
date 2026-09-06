@@ -39,7 +39,7 @@ MenuBarColorPicker is a macOS `MenuBarExtra` app that turns colour picking into 
 
 ### Prebuilt DMG
 
-A ready-to-run build is available as `MenuBarColorPicker-1.0.dmg` (ad-hoc signed, Apple Silicon only). Since it isn't notarized by Apple, macOS blocks it on first launch. Remove the quarantine flag before opening:
+A ready-to-run build is available as `MenuBarColorPicker.dmg` (ad-hoc signed, Apple Silicon only). Since it isn't notarized by Apple, macOS blocks it on first launch. Remove the quarantine flag before opening:
 
 ```bash
 xattr -dr com.apple.quarantine /Applications/MenuBarColorPicker.app
